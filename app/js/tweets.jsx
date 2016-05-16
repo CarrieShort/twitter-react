@@ -59,6 +59,7 @@ var TweetList = React.createClass({
         console.log('res.text', response.data, res);
       }.bind(this));
   },
+  
   render: function() {
     return (
       <ul className="tweets">
