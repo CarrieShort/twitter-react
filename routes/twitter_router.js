@@ -10,34 +10,29 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET, //eslint-disable-line
 });
 
-twitterRouter.get('/recent_posts', (req, res) => {
-  client.get('statuses/user_timeline', (error, tweets) => {
-    if (error) console.log(error);
+twitterRouter.get('/recent_tweets', (req, res) => {
+  client.get('statuses/user_timeline', (error, data) => {
+    if (error) return console.log(error);
     res.status(200).json({
-        tweets: tweets
+        data: data
       });
   });
 });
 
 twitterRouter.post('/new_tweet', bodyParser, (req, res) => {
-  client.post('statuses/update', { status: req.body.status }, (error, tweets) => {
-    if (error) console.log(error);
+  client.post('statuses/update', { status: req.body.status }, (error, data) => {
+    if (error) return console.log(error);
     res.status(200).json({
-      tweets: tweets
+      data: data
     });
   });
 });
 
 twitterRouter.delete('/remove_tweet/:id', (req, res) => {
-  console.log(req.params.id);
-  // client.post('statuses/destroy/731996797053210600', (error, data) => {
-  //   if (error) console.log(error);
-  //   // console.log(thing1, thing2, thing3);
-  //   res.status(200).json({
-  //     tweet: data
-  //   });
-  // });
-  client.post('statuses/destroy/:id', { id: '731999038040506369' }, function (err, data, response) {
-  console.log(data)
-})
-});
+  client.post('statuses/destroy/:id', { id: req.params.id }, (error, data) => {
+    if (error) return console.log(error);
+    res.status(200).json({
+        data: data.text + ' has been deleted'
+      });
+    });
+  });
