@@ -25,6 +25,7 @@ const RecentTweets = React.createClass({
       <div className="recent-tweets">
         <h1>
           Recent Tweets</h1>
+        <NewTweet data={this.state.tweets}/>
         <TweetList data={this.state.tweets}/>
       </div>
     )
@@ -53,6 +54,32 @@ var TweetList = React.createClass({
         }.bind(this))}
       </ul>
     )
+  }
+});
+
+var NewTweet = React.createClass({
+  addTweet: function(e){
+    var currentTweets = this;
+    e.preventDefault();
+    var tweetText = e.target.tweetinput.value;
+    e.target.tweetinput.value = '';
+    this.serverRequest = request.post(baseUrl + '/api/new_tweet')
+    .send({ status: tweetText})
+    .end(function(err, res) {
+      console.log(res.body.data);
+      console.log(currentTweets.props.data);
+      currentTweets.props.data.push(res.body.data);
+      console.log(currentTweets.props.data);
+      currentTweets.setState(currentTweets.props.data);
+    }.bind(this));
+  },
+  render: function (){
+    return (
+    <form onSubmit={this.addTweet}>
+      <input defaultValue="stuff" type="text" name="tweetinput" />
+      <button>Tweet</button>
+    </form>
+  )
   }
 });
 
