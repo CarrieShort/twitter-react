@@ -44,6 +44,7 @@ var TweetList = React.createClass({
         currentTweets.setState(currentTweets.props.data);
       }.bind(this));
   },
+  
   render: function() {
     return (
       <ul className="tweets">
