@@ -1,7 +1,7 @@
 const React = require('react');
 const request = require('superagent');
 const baseUrl = 'http://localhost:3000';
-
+// commit issue
 const RecentTweets = React.createClass({
   loadTwitterData: function() {
     this.serverRequest = request.get(baseUrl + '/api/recent_tweets').end(function(err, res) {
@@ -44,7 +44,7 @@ var TweetList = React.createClass({
         currentTweets.setState(currentTweets.props.data);
       }.bind(this));
   },
-  
+
   render: function() {
     return (
       <ul className="tweets">
