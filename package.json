@@ -19,6 +19,7 @@
   "homepage": "https://github.com/CarrieShort/twitter-react#readme",
   "dependencies": {
     "express": "^4.13.4",
+    "twit": "^2.2.4",
     "twitter": "^1.3.0"
   },
   "devDependencies": {
