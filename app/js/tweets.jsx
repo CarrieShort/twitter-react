@@ -2,32 +2,13 @@ const React = require('react');
 const request = require('superagent');
 const baseUrl = 'http://localhost:3000';
 
-// const deletetweet = (id_str) => {
-//   console.log('delete button clicked!', id_str);
-// };
-
 const RecentTweets = React.createClass({
-  // handleClick: function(e) {
-  //   e.preventDefault();
-  //   var tweetId = this.props.tweet.str_id;
-  //   return this.props.onDelete(tweetId);
-  // },
-  // get game info
   loadTwitterData: function() {
     this.serverRequest = request.get(baseUrl + '/api/recent_tweets').end(function(err, res) {
       var tweets = JSON.parse(res.text).data;
       this.setState({tweets: tweets,});
     }.bind(this));
   },
-
-
-  // deleteTwitterData: function(id_str) {
-  //   console.log('delete button clicked!', id_str);
-  //   // this.serverRequest = request.del(baseUrl + '/api/remove_tweet/' + id_str).end(function(err, res) {
-  //   //   var tweets = JSON.parse(res.text).data
-  //   //   this.setState({tweets: tweets});
-  //   // }.bind(this));
-  // },
 
   getInitialState: function() {
     return {
@@ -52,14 +33,18 @@ const RecentTweets = React.createClass({
 
 var TweetList = React.createClass({
   handleDelete: function(e) {
-    var tweet = this.props.data[e.target.value];
+    var currentTweets = this;
+    var tv = e.target.value;
+    var tweet = this.props.data[tv];
     var tweetId = tweet.id_str;
     return this.serverRequest = request.del(baseUrl + '/api/remove_tweet/' + tweetId).end(function(err, res) {
         var response = JSON.parse(res.text)
-        console.log('res.text', response.data, res);
+        if (err) return console.log(err);
+        currentTweets.props.data.splice(tv, 1);
+        currentTweets.setState(currentTweets.props.data);
       }.bind(this));
   },
-  
+
   render: function() {
     return (
       <ul className="tweets">
